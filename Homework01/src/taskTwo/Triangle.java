@@ -11,6 +11,9 @@ public class Triangle {
 		this.sideB = sideB;
 		this.sideC = sideC;
 	}
+	public Triangle() {
+		super();
+	}
 
 	public double getSideA() {
 		return sideA;
