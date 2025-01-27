@@ -1,0 +1,55 @@
+package sample;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		try {
+			Group group = new Group("Java OOP");
+			
+			Student stu1 = new Student("Игорь", "Шевченко", Gender.MALE, 00600,"Java OOP");
+			Student stu2 = new Student("Олег", "Шматок", Gender.MALE, 00610,"Java OOP");
+			Student stu3 = new Student("Анна", "Романовская", Gender.FEMALE, 00620,"Java OOP");
+			Student stu4 = new Student("Руслан", "Бобков", Gender.MALE, 00630,"Java OOP");
+			Student stu5 = new Student("Елизавета", "Оманска", Gender.FEMALE, 00640,"Java OOP");
+			Student stu6 = new Student("Артем", "Мошкун", Gender.MALE, 00640,"Java OOP");
+			Student stu7 = new Student("Артур", "Английский", Gender.MALE, 00650,"Java OOP");
+			Student stu8 = new Student("Ростислав", "Морошниченко", Gender.MALE, 00660,"Java OOP");
+			Student stu9 = new Student("Марина", "Ермакова", Gender.FEMALE, 00670,"Java OOP");
+			Student stu10 = new Student("Мария", "Хомякова", Gender.FEMALE, 00675,"Java OOP");
+//		    Student stu11 = new Student("Павел", "Лишний", Gender.MALE, 11,"Java OOP");
+			
+			
+			group.addStudent(stu1);
+			group.addStudent(stu2);
+			group.addStudent(stu3);
+			group.addStudent(stu4);
+			group.addStudent(stu5);
+			group.addStudent(stu6);
+			group.addStudent(stu7);
+			group.addStudent(stu8);
+			group.addStudent(stu9);
+			group.addStudent(stu10);
+//			group.addStudent(stu11);
+			
+			System.out.println(group);
+			
+			Student foutStudent = group.searchStudentByLastName("Мошкун");
+			System.out.println("Найден студент:" +foutStudent);
+			
+//    		Student foutStudent2 = group.searchStudentByLastName("Лишний");
+//			System.out.println(foutStudent2);
+			
+			boolean removed = group.removeStudentByID(00650);
+			System.out.println("Удалить :  " + removed);
+			
+			boolean removed1 = group.removeStudentByID(076150);
+			System.out.println("Удалить : " + removed1);
+			
+		}catch (GroupOverflowException | StudentNotFoundException e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}
+	}
+
+}
