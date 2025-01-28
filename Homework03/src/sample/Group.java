@@ -95,10 +95,10 @@ public class Group {
 	public void fromStringRepresentation(String csv) {
 		String[] lines = csv.split("\n");
 		this.groupName= lines [0];
-		CSVStringConverter converter = new CSVStringConverter();
+		CSVStringConverter converter1 = new CSVStringConverter();
 		for(int i = 1; i < lines.length; i++) {
 			if(!lines[i].isBlank()) {
-				Student student = converter.fromStringRepresentation(lines[i]);
+				Student student = converter1.fromStringRepresentation(lines[i]);
 				try {
 					addStudent(student);
 				} catch (GroupOverflowException e) {
