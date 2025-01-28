@@ -84,7 +84,7 @@ public class Group {
 		String result = groupName + "\n";
 		for(Student student : studens) {
 			if(student != null) {
-				result += converter.toStringRepresentation(student);
+				result += converter.toStringRepresentation(student) + "\n";
 			}
 		}
 		return result;
