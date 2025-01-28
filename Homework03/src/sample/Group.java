@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class Group {
 	private String groupName;
@@ -46,6 +47,9 @@ public class Group {
 		}
 		throw new GroupOverflowException("Группа уже переполнена");
 	}
+	
+//	Поиск студента
+	
 	public Student searchStudentByLastName(String lastName) throws StudentNotFoundException {
 		for (Student student : studens) {
 			if(student != null && student.getLastName().equals(lastName)) {
@@ -54,6 +58,9 @@ public class Group {
 		}
 		throw new StudentNotFoundException("Студент "+ lastName +" не найден.");
 	}
+	
+//	Удаление по ID:
+	
 	public boolean removeStudentByID(int id) {
 		for (int i = 0; i < studens.length; i++) {
 			if(studens[i] != null && studens[i].getId() == id) {
@@ -63,12 +70,48 @@ public class Group {
 		}
 		return false;
 	}
-
+	
+//	Сортировка студентов:
+	
+	public void sortStudentsByLastName() {
+		Arrays.sort(studens, Comparator.nullsLast(new StudentLastNameComprator()));
+	}
+	
+//	Добавление группы в CSV:
+	
+	public String toStringRepresentation() {
+		CSVStringConverter converter = new CSVStringConverter();
+		String result = groupName + "\n";
+		for(Student student : studens) {
+			if(student != null) {
+				result += converter.toStringRepresentation(student);
+			}
+		}
+		return result;
+	}
+	
+//	Вывод группы из CSV:
+	
+	public void fromStringRepresentation(String csv) {
+		String[] lines = csv.split("\n");
+		this.groupName= lines [0];
+		CSVStringConverter converter = new CSVStringConverter();
+		for(int i = 1; i < lines.length; i++) {
+			if(!lines[i].isBlank()) {
+				Student student = converter.fromStringRepresentation(lines[i]);
+				try {
+					addStudent(student);
+				} catch (GroupOverflowException e) {
+					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+	}
+	
 	@Override
 	public String toString() {
-		return "Group [groupName= " + groupName + ", studens= " + Arrays.toString(studens) + "]";
+		return "Group [groupName= " + groupName +" | "+ ": studens= " + Arrays.toString(studens) + "]";
 	}
-
-	
 	
 }

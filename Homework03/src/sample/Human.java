@@ -42,7 +42,7 @@ public class Human {
 
 	@Override
 	public String toString() {
-		return "Human [name=" + name + ", lastName=" + lastName + "]";
+		return " Human [name= " + name + ", lastName=" + lastName + "]";
 	}
 	
 }

@@ -1,5 +1,7 @@
 package sample;
 
+import java.util.Scanner;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -17,6 +19,7 @@ public class Main {
 			Student stu8 = new Student("Ростислав", "Морошниченко", Gender.MALE, 00660,"Java OOP");
 			Student stu9 = new Student("Марина", "Ермакова", Gender.FEMALE, 00670,"Java OOP");
 			Student stu10 = new Student("Мария", "Хомякова", Gender.FEMALE, 00675,"Java OOP");
+			
 //		    Student stu11 = new Student("Павел", "Лишний", Gender.MALE, 11,"Java OOP");
 			
 			
@@ -30,21 +33,71 @@ public class Main {
 			group.addStudent(stu8);
 			group.addStudent(stu9);
 			group.addStudent(stu10);
+			
 //			group.addStudent(stu11);
 			
-			System.out.println(group);
+			System.out.println(group.toStringRepresentation() );
+			
+			System.out.println("*********************");
 			
 			Student foutStudent = group.searchStudentByLastName("Мошкун");
 			System.out.println("Найден студент:" +foutStudent);
 			
 //    		Student foutStudent2 = group.searchStudentByLastName("Лишний");
-//			System.out.println(foutStudent2);
+
+			System.out.println("*********************");
 			
 			boolean removed = group.removeStudentByID(00650);
 			System.out.println("Удалить :  " + removed);
 			
 			boolean removed1 = group.removeStudentByID(076150);
 			System.out.println("Удалить : " + removed1);
+			
+			System.out.println("*********************");
+			
+			System.out.println("Группа после сортировки:");
+			group.sortStudentsByLastName();
+			System.out.println(group);
+			
+			System.out.println("***********CSV**********");
+			
+			System.out.println(group.toStringRepresentation());
+			
+			Group restoredGroup = new Group();
+			restoredGroup.fromStringRepresentation(group.toStringRepresentation());
+			
+			System.out.println("***********from CSV**********");
+			System.out.println(restoredGroup);
+			
+			
+			System.out.println("*********************");
+			
+//			Возврат студентов на основе считаемых данных с 
+//			клавиатуры и возможность добавления новой группы до 10 человек и выводом их в console.
+			
+			Scanner sc = new Scanner(System.in);
+			
+			System.out.println("Напишите название группы: ");
+			String groupName = sc.nextLine();
+			
+			Group newGroup = new Group(groupName);
+			for(int i=0; i < 10; i++) {
+				System.out.println("Хотите добавить студента? (Yes/No)");
+				String addStudent = sc.nextLine(); 
+				if(!addStudent.equals("Yes")) {
+					break;
+				}
+				Student newStudent = StudentCharacteristics.createStudentInput();
+				try {
+					newGroup.addStudent(newStudent);
+					System.out.println("Студент добавлен");
+				} catch (GroupOverflowException e) {
+					System.out.println("Группа переполнена");
+					break;
+					// TODO: handle exception
+				}
+			}
+			System.out.println(newGroup.toStringRepresentation());
 			
 		}catch (GroupOverflowException | StudentNotFoundException e) {
 			// TODO: handle exception
