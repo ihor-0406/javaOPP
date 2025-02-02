@@ -1,5 +1,7 @@
 package sample;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -9,16 +11,16 @@ public class Main {
 		try {
 			Group group = new Group("Java OOP");
 			
-			Student stu1 = new Student("Игорь", "Шевченко", Gender.MALE, 00600,"Java OOP");
-			Student stu2 = new Student("Олег", "Шматок", Gender.MALE, 00610,"Java OOP");
-			Student stu3 = new Student("Анна", "Романовская", Gender.FEMALE, 00620,"Java OOP");
-			Student stu4 = new Student("Руслан", "Бобков", Gender.MALE, 00630,"Java OOP");
-			Student stu5 = new Student("Елизавета", "Оманска", Gender.FEMALE, 00640,"Java OOP");
-			Student stu6 = new Student("Артем", "Мошкун", Gender.MALE, 00640,"Java OOP");
-			Student stu7 = new Student("Артур", "Английский", Gender.MALE, 00650,"Java OOP");
-			Student stu8 = new Student("Ростислав", "Морошниченко", Gender.MALE, 00660,"Java OOP");
-			Student stu9 = new Student("Марина", "Ермакова", Gender.FEMALE, 00670,"Java OOP");
-			Student stu10 = new Student("Мария", "Хомякова", Gender.FEMALE, 00675,"Java OOP");
+			Student stu1 = new Student("Igor", "Shevchenko", Gender.MALE, 600, "Java OOP");
+			Student stu2 = new Student("Oleg", "Shmatok", Gender.MALE, 610, "Java OOP");
+			Student stu3 = new Student("Anna", "Romanovskaya", Gender.FEMALE, 620, "Java OOP");
+			Student stu4 = new Student("Ruslan", "Bobkov", Gender.MALE, 630, "Java OOP");
+			Student stu5 = new Student("Elizaveta", "Omanska", Gender.FEMALE, 640, "Java OOP");
+			Student stu6 = new Student("Artem", "Moshkun", Gender.MALE, 640, "Java OOP");
+			Student stu7 = new Student("Artur", "Angliyskiy", Gender.MALE, 650, "Java OOP");
+			Student stu8 = new Student("Rostislav", "Moroznichenko", Gender.MALE, 660, "Java OOP");
+			Student stu9 = new Student("Marina", "Ermakova", Gender.FEMALE, 670, "Java OOP");
+			Student stu10 = new Student("Mariya", "Khomyakova", Gender.FEMALE, 675, "Java OOP");
 			
 //		    Student stu11 = new Student("Павел", "Лишний", Gender.MALE, 11,"Java OOP");
 			
@@ -40,7 +42,7 @@ public class Main {
 			
 			System.out.println("*********************");
 			
-			Student foutStudent = group.searchStudentByLastName("Мошкун");
+			Student foutStudent = group.searchStudentByLastName("Romanovskaya");
 			System.out.println("Найден студент:" +foutStudent);
 			
 //    		Student foutStudent2 = group.searchStudentByLastName("Лишний");
@@ -72,8 +74,31 @@ public class Main {
 			
 			System.out.println("*********************");
 			
-//			Возврат студентов на основе считаемых данных с 
-//			клавиатуры и возможность добавления новой группы до 10 человек и выводом их в console.
+			GroupFileStorage storage = new GroupFileStorage();
+			
+			
+			try {
+				storage.saveGroupToCSV(group);
+				File workFolder = new File(".");
+			File groupFile = storage.findFileByGroupName("Java OOP", workFolder);
+			
+			if(groupFile != null) {
+				Group loadedGroup = storage.loadGroupFromCSV(groupFile);
+				System.out.println("\nГруппа загружена");
+				System.out.println(loadedGroup);
+			}
+			} catch (IOException e) {
+				// TODO: handle exception
+				System.out.println(e.getMessage());
+			}
+		
+			
+			
+			
+			/*
+			 * Возврат студентов на основе считаемых данных с 
+			 * клавиатуры и возможность добавления новой группы до 10 человек и выводом их в console.
+			 */
 			
 			Scanner sc = new Scanner(System.in);
 			
@@ -103,6 +128,8 @@ public class Main {
 			// TODO: handle exception
 			System.out.println(e.getMessage());
 		}
+		
+		
 	}
 
 }
