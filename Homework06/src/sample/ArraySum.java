@@ -15,12 +15,14 @@ public class ArraySum {
 		long startTime = System.currentTimeMillis();
 		long simpleSum = simpleSum();
 		long endTime = System.currentTimeMillis();
+		System.out.println("===========================================");
 		System.out.println("Обычный подсчет : " +simpleSum + " -> " + (endTime - startTime) + "ms");
 		
 		startTime = System.currentTimeMillis();
 		long paralleSum = multiThreadSum();
 		endTime = System.currentTimeMillis();
 		System.out.println("Многопоточный подсчет : " + multiThreadSum() + " -> " + (endTime - startTime) + "ms");
+		System.out.println("===========================================");
 	}
 	public static long simpleSum() {
 		long sum = 0;
