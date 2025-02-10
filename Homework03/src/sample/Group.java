@@ -2,6 +2,7 @@ package sample;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class Group {
 	private String groupName;
@@ -109,6 +110,41 @@ public class Group {
 		}
 	}
 	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(studens);
+		result = prime * result + Objects.hash(groupName);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Group other = (Group) obj;
+		return Objects.equals(groupName, other.groupName) && Arrays.equals(studens, other.studens);
+	}
+	
+	public boolean equivalentStudents() {
+		for(int i = 0; i < studens.length; i++) {
+			for(int g = i + 1; g < studens.length; g++) {
+				if(studens[i].equals(studens[g])) {
+					System.out.println("У Вас в группе присутсвуют одинаковые студуденты!");
+					return true;
+				}
+			}
+		}
+		System.out.println("Эквивалентных студентов нету!");
+		return false;
+	}
+
 	@Override
 	public String toString() {
 		return "Group [groupName= " + groupName +" | "+ ": studens= " + Arrays.toString(studens) + "]";

@@ -39,6 +39,8 @@ public class Main {
 //			group.addStudent(stu11);
 			
 			System.out.println(group.toStringRepresentation() );
+			System.out.println(group.equivalentStudents());
+
 			
 			System.out.println("*********************");
 			
