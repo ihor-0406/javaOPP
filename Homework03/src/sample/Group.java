@@ -1,12 +1,15 @@
 package sample;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 public class Group {
 	private String groupName;
-	private Student[] studens = new Student[10];
+//	private Student[] studens = new Student[10];
+	private List<Student> students = new ArrayList<Student>();
 	
 	
 	public Group(String groupName) {
@@ -14,10 +17,11 @@ public class Group {
 		this.groupName = groupName;
 	}
 
-	public Group(String groupName, Student[] studens) {
+	
+    public Group(String groupName, List<Student> student) {
 		super();
 		this.groupName = groupName;
-		this.studens = studens;
+		this.students = student;
 	}
 
 	public Group() {
@@ -32,28 +36,27 @@ public class Group {
 		this.groupName = groupName;
 	}
 
-	public Student[] getStudens() {
-		return studens;
+	public List<Student> getStudent() {
+		return students;
 	}
 
-	public void setStudens(Student[] studens) {
-		this.studens = studens;
+
+	public void setStudent(List<Student> student) {
+		this.students = student;
 	}
+
 	public void addStudent(Student student) throws GroupOverflowException{
-		for(int i = 0; i < studens.length; i++) {
-			if(studens[i] == null) {
-				studens[i]= student;
-				return;
-			}
+		if(students.size() >= 10) {
+			throw new GroupOverflowException("Группа уже переполнена");
 		}
-		throw new GroupOverflowException("Группа уже переполнена");
+		students.add(student);
 	}
 	
 //	Поиск студента
 	
 	public Student searchStudentByLastName(String lastName) throws StudentNotFoundException {
-		for (Student student : studens) {
-			if(student != null && student.getLastName().equals(lastName)) {
+		for (Student student : students) {
+			if(student.getLastName().equals(lastName)) {
 				return student;
 			}
 		}
@@ -63,32 +66,25 @@ public class Group {
 //	Удаление по ID:
 	
 	public boolean removeStudentByID(int id) {
-		for (int i = 0; i < studens.length; i++) {
-			if(studens[i] != null && studens[i].getId() == id) {
-				studens[i] = null;
-				return true;
-			}
-		}
-		return false;
+		
+		return students.removeIf(student -> student.getId() == id);
 	}
 	
 //	Сортировка студентов:
 	
 	public void sortStudentsByLastName() {
-		Arrays.sort(studens, Comparator.nullsLast(new StudentLastNameComprator()));
+		students.sort(new StudentLastNameComprator());
 	}
 	
 //	Добавление группы в CSV:
 	
 	public String toStringRepresentation() {
 		CSVStringConverter converter = new CSVStringConverter();
-		String result = groupName + "\n";
-		for(Student student : studens) {
-			if(student != null) {
-				result += converter.toStringRepresentation(student) + "\n";
-			}
+		StringBuilder result = new StringBuilder(groupName + "\n");
+		for(Student student : students) {
+			result.append(converter.toStringRepresentation(student)).append("\n");
 		}
-		return result;
+		return result.toString();
 	}
 	
 //	Вывод группы из CSV:
@@ -97,28 +93,20 @@ public class Group {
 		String[] lines = csv.split("\n");
 		this.groupName= lines [0];
 		CSVStringConverter converter1 = new CSVStringConverter();
-		for(int i = 1; i < lines.length; i++) {
+		students.clear();
+		for( int i = 1; i < lines.length; i ++) {
 			if(!lines[i].isBlank()) {
 				Student student = converter1.fromStringRepresentation(lines[i]);
-				try {
-					addStudent(student);
-				} catch (GroupOverflowException e) {
-					// TODO: handle exception
-					System.out.println(e.getMessage());
-				}
+				students.add(student);
 			}
 		}
 	}
 	
-	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(studens);
-		result = prime * result + Objects.hash(groupName);
-		return result;
+		return Objects.hash(groupName, students);
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -129,13 +117,14 @@ public class Group {
 		if (getClass() != obj.getClass())
 			return false;
 		Group other = (Group) obj;
-		return Objects.equals(groupName, other.groupName) && Arrays.equals(studens, other.studens);
+		return Objects.equals(groupName, other.groupName) && Objects.equals(students, other.students);
 	}
-	
+
+
 	public boolean equivalentStudents() {
-		for(int i = 0; i < studens.length; i++) {
-			for(int g = i + 1; g < studens.length; g++) {
-				if(studens[i].equals(studens[g])) {
+		for(int i = 0; i < students.size(); i++) {
+			for(int g = i + 1; g < students.size(); g++) {
+				if(students.get(i).equals(students.get(g))) {
 					System.out.println("У Вас в группе присутсвуют одинаковые студуденты!");
 					return true;
 				}
@@ -145,9 +134,12 @@ public class Group {
 		return false;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Group [groupName= " + groupName +" | "+ ": studens= " + Arrays.toString(studens) + "]";
+		return "Group [groupName=" + groupName + ", students=" + students + "]";
 	}
+
+	
 	
 }
